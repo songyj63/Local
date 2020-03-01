@@ -56,7 +56,7 @@ model.compile(loss="sparse_categorical_crossentropy",
                 metrics=["accuracy"])
 
 # sparse_categorical_crossentropy: label from 0 to 9
-# categrical_creossentropy: one-hot vectors [0, 0, 1]
+# categorical_crossentropy: one-hot vectors [0, 0, 1]
 # binary classification:
 # binary_crossentropy with sigmoid activation at the end
 
