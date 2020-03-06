@@ -35,3 +35,5 @@ model = keras.models.Sequential([
     keras.layers.Activation("elu"),
     keras.layers.Dense(10, activation="softmax")
 ])
+
+#%%
