@@ -89,6 +89,7 @@ history = model.fit(X_train, y_train, epochs=100,
 # tensorboard --logdir=C:\Users\VUNO\Desktop\Programming\Git\Study\Study01\Chapter10\my_logs --port=6006
 
 #%%
+curdir = '/home/yjsong/Git/Study/Study01/Chapter10'
 
 # filepath_loss=os.path.join(curdir, "result/best_loss_model.hdf5")
 filepath_acc=os.path.join(curdir, "result/best_acc_model.hdf5")
