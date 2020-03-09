@@ -99,3 +99,9 @@ model = keras.models.Sequential([
 ])
 
 
+#%%
+# max norm
+# 가중치의 크기를 제한
+
+keras.layers.Dense(100, activation="elu", kernel_initializer="he_normal",
+kernel_constraint=keras.constraints.max_norm(1.))
