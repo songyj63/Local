@@ -22,6 +22,7 @@ def preprocess(image, label):
     return final_image, label
 
 batch_size = 32
+dataset_size = info.splits["train"].num_examples
 train_set = test_set_raw.shuffle(1000)
 train_set = test_set_raw.map(preprocess).batch(batch_size).prefetch(1)
 valid_set = valid_set_raw.map(preprocess).batch(batch_size).prefetch(1)
@@ -32,16 +33,27 @@ avg = keras.layers.GlobalAveragePooling2D()(base_model.output)
 output = keras.layers.Dense(n_classes, activation="softmax")(avg)
 model = keras.Model(inputs=base_model.input, outputs=output)
 
+
 for layer in base_model.layers:
     layer.trainable = False
 
 optimizer = keras.optimizers.SGD(lr=0.2, momentum=0.9, decay=0.01)
 model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
-history = model.fit(train_set, epochs=5, validation_data=valid_set)
+history = model.fit(train_set,
+                    steps_per_epoch=int(0.75 * dataset_size / batch_size),
+                    validation_data=valid_set,
+                    validation_steps=int(0.15 * dataset_size / batch_size),
+                    epochs=5)
 
 for layer in base_model.layers:
     layer.trainable = True
+
+optimizer = keras.optimizers.SGD(learning_rate=0.01, momentum=0.9, nesterov=True, decay=0.001)
+model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+history = model.fit(train_set,
+                    steps_per_epoch=int(0.75 * dataset_size / batch_size),
+                    validation_data=valid_set,
+                    validation_steps=int(0.15 * dataset_size / batch_size),
+                    epochs=40)
     
-optimizer = keras.optimizers.SGD(lr=0.01, momentum=0.9, decay=0.001)
-model.compile(...)
-history = model.fit(...)
+#%%
